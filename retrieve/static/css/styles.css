@@ -2,21 +2,19 @@ html, body {
     font-family: 'Raleway', sans-serif;
     height: 100%;
     margin: 0;
-    background: whitesmoke;
+    background: #F4F4F4;
 }
 
 .nav-wrapper {
+    font-family: 'Playfair Display', serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: absolute;
     width: 100%;
     list-style: none;
-    background: white;
     font-size: 18px;
     align-content: center;
-    border-bottom:2px solid #CC3434;
-    box-shadow: 0 12px 6px -6px rgba(0,0,0, .2);
+    border-bottom:2px solid transparent;
 }
 
 .nav-wrapper ul {
@@ -30,16 +28,15 @@ html, body {
 
 .nav-wrapper ul li {
     list-style: none;
-    position: relative;
     float: right;
     line-height: 70px;
     background: inherit;
     text-align: center;
-    border-top: 4px solid white;
+    border-bottom: 4px solid transparent;
 }
 
-.nav-wrapper ul li a{
-    color: darkgrey;
+.nav-wrapper ul li a {
+    color: #CC3434;
     position: relative;
     display: block;
     padding: 0 20px;
@@ -49,9 +46,9 @@ html, body {
 
 
 .nav-wrapper ul li a:hover{
-    color: #141414;
+    color: #17252A;
 }
 
 .nav-wrapper ul li:hover{
-    border-top: 4px solid #CC3434;
+    border-bottom: 4px solid #17252A;
 }
