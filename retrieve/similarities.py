@@ -1,10 +1,12 @@
 import numpy as np
-import json 
-import math
+import json, math
 
 from nltk.corpus import stopwords
-from nltk.stem.snowball import SnowballStemmer
+from retrieve.models import Book, Word
+from retrieve.utility import stemmer, count_idf
+from django.core.exceptions import ObjectDoesNotExist
 
+# done
 # cosine similarity given 2 arrays
 def cosine_similarity(arr1, arr2):
 
@@ -25,50 +27,63 @@ def cosine_similarity(arr1, arr2):
 
 	return dot/mag
 
-def prepare_document_vector(collection, stemmer):
+# done
+def prepare_document_vector():
 
-	collection_size = len(collection)
-	stopwords_list = set(stopwords.words("english"))
-	collection_count = {}
-	document_count = {}
+	collection_size = Book.objects.all().count()
+	collection_count_title = {}
+	collection_count_desc = {}
 
-	for item in collection:
-		tokens = item.description().lower().split()
-		tokens = [stemmer.stem(word) for word in tokens if word not in stopwords_list]
+	for item in Book.objects.all():
+		item.prepare()
+		
+		for word in item.dict('desc').keys():
+			collection_count_desc[word] = collection_count_desc.get(word,0) + 1
 
-		for word in tokens:
-			document_count[word] = document_count.get(word, 0) + 1
-
-		for word in set(tokens):
-			collection_count[word] = collection_count.get(word, 0) + 1
-
-	IDF_dictionary = {}
-	for (word, count) in collection.items():
-
-		upper_hand = math.log( collection_size / collection_count[word] )
-		lower_hand = math.log(10)
-
-		IDF_dictionary[word] = upper_hand / lower_hand
+		for word in item.dict('title').keys():
+			collection_count_title[word] = collection_count_title.get(word,0) + 1
 
 
-def prepare_query_vector():
-	pass
+	for (word, count) in collection_count_desc.items():
 
-def get_weight(word):
-	pass
+		idf = count_idf(collection_size, count)
+		new_word = Word(value=word, desc_idf=idf)
+		new_word.save()
+
+	for (word, count) in collection_count_title.items():
+
+		idf = count_idf(collection_size, count)
+		update_word = None
+
+		try:
+			update_word = Word.objects.get(value=word)
+			update_word.title_idf = idf
+		except ObjectDoesNotExist:
+			update_word = Word(value=word, title_idf=idf)
+		finally:
+			update_word.save()
+
+#done
+def get_weight(word, attr):
+	
+	ret = 0
+
+	try:
+		found = Word.objects.get(value=word)
+		ret = found.dict(attr)[word]
+	except ObjectDoesNotExist:
+		pass
+	
+	return ret
 
 
-def find_similar_title(query, collection):
-
-	result = []
-	stemmer = SnowballStemmer("english")
+def find_similar_title(query):
 
 	query_title = query.lower()
 	
-	for item in collection:
+	for item in Book.objects.all():
 		if query_title == item.title:
-			result.append(item.title)
-			return result
+			ret += "{books:[{ title:{}, desc:{} \}]".format(book.title, book.description)
 
 	query_vector = string_to_vector(query_title, stemmer)
 	rank = []
@@ -79,45 +94,54 @@ def find_similar_title(query, collection):
 		v2 = [item_vector[word] for (word,count) in query_vector]
 
 		similarity = cosine_similarity(v1, v2)
-		rank.append((item.title, similarity))
+		rank.append((item.book_id, similarity))
 
 	result = sorted(rank, key = lambda x : x[1], reverse = True)[:3]
 
-	return result
+	ret = "{books:["
+	for item in result:
+		book = Book.objects.get(book_id=item[0])
+		ret += "\{ title:{}, desc:{} \},".format(book.title, book.description)
 
-def find_similar_desc(query, collection):
+	ret += "]}"
+
+	return ret
+
+def find_similar_desc(query):
 	
-	result = []
-	stemmer = SnowballStemmer("english")
-
 	query_desc = query.lower()
 	
-	query_vector = string_to_vector(query_desc, stemmer)
+	query_vector = string_to_vector(query_desc)
 	rank = []
-	for item in collection:
+	for item in Book.objects.all():
 		item_vector = item.title_wc
 
 		v1 = [x[1] for x in query_vector]
-		v2 = [	(item_vector[word] * get_weight(x))
+		v2 = [	(item_vector[word] * get_weight(word, 'desc'))
 				for (word,count) in query_vector
 			 ]
 
 		similarity = cosine_similarity(v1, v2)
-		rank.append((item.title, similarity))
+		rank.append((item.book_id, similarity))
 
 	result = sorted(rank, key = lambda x : x[1], reverse = True)[:3]
 
-	return result
+	ret = "{books:["
+	for item in result:
+		book = Book.objects.get(book_id=item[0])
+		ret += "\{ title:{}, desc:{} \},".format(book.title, book.description)
 
-def string_to_vector(query, stemmer):
+	ret += "]}"
+	return ret
 
+def string_to_vector(query):
 
-	string_array = [stemmer.stem(x) for x in query.split()]
+	stopwords_list = set(stopwords.words("english"))
+
+	string_array = [stemmer(x) for x in query.split() if x not in stopwords_list]
 	return [	(x,string_array.count(x) * get_weight(x)) 
 				for x in set(string_array)
 			]
-
-
 
 # Isi collection
 # 
