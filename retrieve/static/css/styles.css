@@ -46,11 +46,18 @@ html, body {
     text-decoration: none;
 }
 
-
 .nav-wrapper ul li a:hover{
     color: #17252A;
 }
 
 .nav-wrapper ul li:hover{
     border-bottom: 4px solid #17252A;
+}
+
+#tittle:hover{
+    color: #CC3434 !important;
+}
+
+#title:hover {
+    border-bottom: 4px solid transparent !important;
 }

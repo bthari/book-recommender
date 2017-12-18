@@ -31,6 +31,7 @@
 }
 
 .accordion p {
+    font-family: 'Raleway', sans-serif;
     padding: 15px 35px;
     background-color: #ddd;
     font-size: .8rem;

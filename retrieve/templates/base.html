@@ -11,22 +11,21 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     {% block css %} <!-- add stylesheet for other page --> {% endblock %}
 
-    {% block title %}<title>Library</title>{% endblock %}
+    {% block title %}<title>Snoopy Library</title>{% endblock %}
 </head>
 <body>
     <div>
         <nav class="nav-wrapper">
             {% block navbar %}
             <ul>
-                <li style="float:left"><a href="#">Hello!</a></li>
-                <li><a href="#">Book List</a></li>
-                <li><a href="#">Find!</a></li>
+                <li style="float:left" id="title"><a href="#" id="tittle">Snoopy Book Recommender</a></li>
+                <li><a href="/retrieve/search/">Find!</a></li>
             </ul>
             {% endblock %}
         </nav>
     </div>
-<div class="content-wrapper">
+    <div class="content-wrapper">
             {% block content %}<!-- default content text (typically empty) -->{% endblock %}
-        </div>
+    </div>
 </body>
 </html>
