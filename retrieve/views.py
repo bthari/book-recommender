@@ -9,6 +9,10 @@ data = {"books": [{"id": "1", "title": "A", "desc": "AAAA"},
                   {"id": "1", "title": "A", "desc": "AAAA"}]}
 
 
+def index(request):
+    return render(request, "results.html", response)
+
+
 def results(request):
     return render(
         request,
@@ -21,9 +25,10 @@ def search_books(request):
 
     if request.method == 'GET' and form.is_valid():
         response["query"] = request.GET['query_book']
+        response["data"] = data
         print(response["query"])
 
-        return HttpResponseRedirect("/retrieve/results/", {'data': data})
+        return render(request, 'results.html', {'data': data})
 
     else:
         form = QueryForms()
