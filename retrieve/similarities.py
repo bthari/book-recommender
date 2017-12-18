@@ -1,5 +1,8 @@
 import numpy as np
-import json
+import json 
+import math
+
+from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 
 # cosine similarity given 2 arrays
@@ -22,14 +25,46 @@ def cosine_similarity(arr1, arr2):
 
 	return dot/mag
 
-def prepare_document_vector():
-	pass
+def prepare_document_vector(collection, stemmer):
+
+	collection_size = len(collection)
+	stopwords_list = set(stopwords.words("english"))
+	collection_count = {}
+	document_count = {}
+
+	for item in collection:
+		tokens = item.description().lower().split()
+		tokens = [stemmer.stem(word) for word in tokens if word not in stopwords_list]
+
+		for word in tokens:
+			document_count[word] = document_count.get(word, 0) + 1
+
+		for word in set(tokens):
+			collection_count[word] = collection_count.get(word, 0) + 1
+
+	IDF_dictionary = {}
+	for (word, count) in collection.items():
+
+		upper_hand = math.log( collection_size / collection_count[word] )
+		lower_hand = math.log(10)
+
+		IDF_dictionary[word] = upper_hand / lower_hand
+
 
 def prepare_query_vector():
 	pass
 
 def get_weight(word):
 	pass
+
+sub countIDF{
+	foreach my $word (sort keys %collection_freq){
+		my $upper = log((scalar keys %collection_freq)/scalar @{$collection_freq{$word}});
+		$idf{$word} = $upper/log(10);
+		print("$idf{$word}\n");
+	}
+}
+
 
 def find_similar_title(query, collection):
 
