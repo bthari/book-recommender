@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/resultStyle.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'js/accordion.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="query-search">
+        <div class="title">
+            Recommended Books for You
+            <span class="icon"><i class="fa fa-heart"></i></span>
+        </div>
+        <div class="container">
+            <aside class="accordion">
+                <div>
+                    {% if data %}
+                        {% for dat in data.books %}
+                            <h2>{{ dat.title }}</h2>
+                            <p>{{ dat.desc }}</p>
+                        {% endfor %}
+                    {% else %}
+                        <strong>Sorry there's an error.</strong>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Import Google Font-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    {% block css %} <!-- add stylesheet for other page --> {% endblock %}
+
+    {% block title %}<title>Snoopy Library</title>{% endblock %}
+</head>
+<body>
+    <div>
+        <nav class="nav-wrapper">
+            {% block navbar %}
+            <ul>
+                <li style="float:left" id="title"><a href="#" id="tittle">Snoopy Book Recommender</a></li>
+                <li><a href="/retrieve/search/">Find!</a></li>
+            </ul>
+            {% endblock %}
+        </nav>
+    </div>
+    <div class="content-wrapper">
+            {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+    </div>
+</body>
+</html>

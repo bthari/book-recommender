@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/indexStyles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="query-search">
+        <div class="title">
+            Recommend Me Some Books!
+        </div>
+        <div class="box">
+            <form class="container-search" action="" method="get">
+                {% csrf_token %}
+                <span class="icon"><i class="fa fa-search"></i></span>
+                {{ form }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
