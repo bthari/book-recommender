@@ -57,14 +57,6 @@ def prepare_query_vector():
 def get_weight(word):
 	pass
 
-sub countIDF{
-	foreach my $word (sort keys %collection_freq){
-		my $upper = log((scalar keys %collection_freq)/scalar @{$collection_freq{$word}});
-		$idf{$word} = $upper/log(10);
-		print("$idf{$word}\n");
-	}
-}
-
 
 def find_similar_title(query, collection):
 
