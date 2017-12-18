@@ -21,5 +21,5 @@ from retrieve import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^retrieve/', include('retrieve.urls')),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.results, name='index'),
 ]

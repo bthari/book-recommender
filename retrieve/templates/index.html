@@ -11,10 +11,12 @@
             Recommend Me Some Books!
         </div>
         <div class="box">
-            <div class="container-search">
+            <form class="container-search" action="" method="get">
+                {% csrf_token %}
                 <span class="icon"><i class="fa fa-search"></i></span>
-                <input type="search" id="search" placeholder="Search..." />
-            </div>
+{#                <input type="search" id="search_query" name="search_query" placeholder="Search..."/>#}
+                {{ form }}
+            </form>
         </div>
     </div>
 {% endblock %}
