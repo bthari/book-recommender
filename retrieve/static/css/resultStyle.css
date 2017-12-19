@@ -1,0 +1,44 @@
+.container{
+    margin: 0;
+    padding: 0;
+}
+
+.query-search{
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5rem;
+}
+
+.title {
+    color: #CC3434;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 30px;
+}
+
+.accordion {
+    width: 600px;
+    margin: 20px auto;
+}
+
+.accordion h2 {
+    padding: 5px 25px;
+    background-color: #CC3434;
+    font-size: 1.1rem;
+    color: #F4F4F4;
+}
+
+.accordion p {
+    font-family: 'Raleway', sans-serif;
+    padding: 15px 35px;
+    background-color: #ddd;
+    font-size: .8rem;
+    color: #17252A;
+    line-height: 1.3rem;
+}
+
+.accordion .opened-for-codepen {
+    display: block;
+}
